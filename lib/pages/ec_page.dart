@@ -10,21 +10,22 @@ class EcPage extends StatefulWidget {
   State<EcPage> createState() => _EcPageState();
 }
 
-class _EcPageState extends State<EcPage> with SingleTickerProviderStateMixin {
+class _EcPageState extends State<EcPage> with TickerProviderStateMixin {
+  final ScrollController _scrollController = ScrollController();
+  late AnimationController _selectAnimationController;
   late AnimationController _controller;
   late Animation<double> _animation;
-  late List<EcProduct> productList;
   final List<EcProduct> cartList = [];
   bool isCartShow = false;
   bool isModalShow = false;
-  double cartHeight = 0;
+  double cartHeight = 0.0;
+  double picHeight = 0.0;
+  EcProduct? selectProduct;
 
   Future<List<EcProduct>> fetchProducts() async {
     final String response = await rootBundle.loadString('ec_products.json');
     final data = await json.decode(response) as List;
-    Future.delayed(const Duration(seconds: 1));
-
-    productList = data.map<EcProduct>((json) => EcProduct.fromJson(json)).toList();
+    final productList = data.map<EcProduct>((json) => EcProduct.fromJson(json)).toList();
     return productList;
   }
 
@@ -43,6 +44,23 @@ class _EcPageState extends State<EcPage> with SingleTickerProviderStateMixin {
       }
     });
     _animation = CurvedAnimation(parent: _controller, curve: Curves.easeInOut);
+
+    _selectAnimationController = AnimationController(
+      duration: const Duration(milliseconds: 1000),
+      vsync: this,
+    );
+    _selectAnimationController.addListener(() {
+      if (_selectAnimationController.isCompleted) {
+        _selectAnimationController.reset();
+        setState(() {
+          selectProduct = null;
+        });
+      }
+    });
+
+    _scrollController.addListener(() {
+      print(_scrollController.offset);
+    });
   }
 
   @override
@@ -75,12 +93,13 @@ class _EcPageState extends State<EcPage> with SingleTickerProviderStateMixin {
                           } else if (snapshot.hasData) {
                             final List<EcProduct> listData = snapshot.data!;
                             return ListView.builder(
+                              controller: _scrollController,
                               itemCount: snapshot.data!.length,
                               itemBuilder: (context, index) {
                                 return Card(
                                     color: Colors.blueGrey[100],
                                     child: SizedBox(
-                                      height: 120,
+                                      height: 112,
                                       child: Row(
                                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         children: [
@@ -130,10 +149,15 @@ class _EcPageState extends State<EcPage> with SingleTickerProviderStateMixin {
                                                   ),
                                                 ),
                                                 InkWell(
-                                                  onTap: () {
-                                                    print('カートに追加 ${index}');
+                                                  onTap: () async {
+                                                    if (_selectAnimationController.isAnimating) return;
+                                                    _selectAnimationController.forward();
                                                     setState(() {
-                                                      cartList.add(listData[index]);
+                                                      picHeight = index * 120 - _scrollController.offset;
+                                                      selectProduct = listData[index];
+                                                      Future.delayed(const Duration(milliseconds: 1000), () {
+                                                        cartList.add(listData[index]);
+                                                      });
                                                     });
                                                   },
                                                   child: Container(
@@ -275,9 +299,7 @@ class _EcPageState extends State<EcPage> with SingleTickerProviderStateMixin {
                                   'assets/images/${cartList[cartList.length - 1].avatar}',
                                   fit: BoxFit.fill,
                                 )
-                              : Container()
-                          // size: const Size(100, 100),
-                          ),
+                              : Container()),
                     ),
                   ));
             },
@@ -310,6 +332,32 @@ class _EcPageState extends State<EcPage> with SingleTickerProviderStateMixin {
                   ));
             },
           ),
+          AnimatedBuilder(
+            animation: _selectAnimationController,
+            builder: (context, child) {
+              final CurvedAnimation animation =
+                  CurvedAnimation(parent: _selectAnimationController, curve: Curves.easeOutBack);
+              final w = MediaQuery.sizeOf(context).width - 100;
+              final h = picHeight - 40;
+              return selectProduct != null
+                  ? Positioned(
+                      top: picHeight + 20 - animation.value * h,
+                      left: 20 + _selectAnimationController.value * w,
+                      child: Transform.scale(
+                        scale: 1 + 0.8 * _selectAnimationController.value,
+                        child: SizedBox(
+                          width: 80,
+                          height: 80,
+                          child: Image.asset(
+                            'assets/images/${selectProduct?.avatar}',
+                            fit: BoxFit.contain,
+                          ),
+                        ),
+                      ),
+                    )
+                  : Container();
+            },
+          )
         ],
       ),
     );
