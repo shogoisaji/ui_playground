@@ -1,0 +1,122 @@
+[
+    {
+        "id": 1,
+        "name": "Burger",
+        "price": 300,
+        "avatar": "avatar1.png"
+    },
+    {
+        "id": 2,
+        "name": "Pizza",
+        "price": 500,
+        "avatar": "avatar2.png"
+    },
+    {
+        "id": 3,
+        "name": "Pasta",
+        "price": 400,
+        "avatar": "avatar3.png"
+    },
+    {
+        "id": 4,
+        "name": "Sandwich",
+        "price": 200,
+        "avatar": "avatar4.png"
+    },
+    {
+        "id": 5,
+        "name": "French Fries",
+        "price": 150,
+        "avatar": "avatar5.png"
+    },
+    {
+        "id": 6,
+        "name": "Coke",
+        "price": 100,
+        "avatar": "avatar6.png"
+    },
+    {
+        "id": 7,
+        "name": "Pepsi",
+        "price": 100,
+        "avatar": "avatar7.png"
+    },
+    {
+        "id": 8,
+        "name": "Sprite",
+        "price": 100,
+        "avatar": "avatar8.png"
+    },
+    {
+        "id": 9,
+        "name": "Diet Coke",
+        "price": 100,
+        "avatar": "avatar9.png"
+    },
+    {
+        "id": 10,
+        "name": "Diet Pepsi",
+        "price": 100,
+        "avatar": "avatar1.png"
+    },
+    {
+        "id": 11,
+        "name": "Diet Sprite",
+        "price": 100,
+        "avatar": "avatar2.png"
+    },
+    {
+        "id": 12,
+        "name": "Coke Zero",
+        "price": 100,
+        "avatar": "avatar3.png"
+    },
+    {
+        "id": 13,
+        "name": "Pepsi Zero",
+        "price": 100,
+        "avatar": "avatar4.png"
+    },
+    {
+        "id": 14,
+        "name": "Sprite Zero",
+        "price": 100,
+        "avatar": "avatar5.png"
+    },
+    {
+        "id": 15,
+        "name": "Coke Light",
+        "price": 100,
+        "avatar": "avatar6.png"
+    },
+    {
+        "id": 16,
+        "name": "Pepsi Light",
+        "price": 100,
+        "avatar": "avatar7.png"
+    },
+    {
+        "id": 17,
+        "name": "Sprite Light",
+        "price": 100,
+        "avatar": "avatar8.png"
+    },
+    {
+        "id": 18,
+        "name": "Diet Coke Light",
+        "price": 100,
+        "avatar": "avatar9.png"
+    },
+    {
+        "id": 19,
+        "name": "Diet Pepsi Light",
+        "price": 100,
+        "avatar": "avatar1.png"
+    },
+    {
+        "id": 20,
+        "name": "Diet Sprite Light",
+        "price": 100,
+        "avatar": "avatar2.png"
+    }
+]
