@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:ui_playground/pages/color_bg.dart';
 import 'package:ui_playground/pages/custom_valume_page.dart';
 import 'package:ui_playground/pages/ec_page.dart';
 import 'package:ui_playground/pages/hide_screen_page.dart';
@@ -22,6 +23,10 @@ List<Map<String, dynamic>> pages = [
   {
     'name': 'hideScreen',
     'page': const HideScreenPage(),
+  },
+  {
+    'name': 'colorBg',
+    'page': const ColorBgPage(),
   },
 ];
 
