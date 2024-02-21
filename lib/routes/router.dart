@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ui_playground/pages/custom_valume_page.dart';
 import 'package:ui_playground/pages/ec_page.dart';
+import 'package:ui_playground/pages/hide_screen_page.dart';
 import 'package:ui_playground/pages/matrix4_list.dart';
 
 // 新しいpageを追加する場合は、pagesリストにMapを追加する
@@ -17,6 +18,10 @@ List<Map<String, dynamic>> pages = [
   {
     'name': 'ec',
     'page': const EcPage(),
+  },
+  {
+    'name': 'hideScreen',
+    'page': const HideScreenPage(),
   },
 ];
 

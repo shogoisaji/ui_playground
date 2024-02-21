@@ -58,9 +58,9 @@ class _EcPageState extends State<EcPage> with TickerProviderStateMixin {
       }
     });
 
-    _scrollController.addListener(() {
-      print(_scrollController.offset);
-    });
+    // _scrollController.addListener(() {
+    //   print(_scrollController.offset);
+    // });
   }
 
   @override
