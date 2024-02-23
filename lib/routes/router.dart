@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:ui_playground/pages/calendar_page.dart';
 import 'package:ui_playground/pages/color_bg.dart';
 import 'package:ui_playground/pages/custom_valume_page.dart';
 import 'package:ui_playground/pages/ec_page.dart';
@@ -11,7 +12,7 @@ import 'package:ui_playground/pages/slide_select_page.dart';
 // 新しいpageを追加する場合は、pagesリストにMapを追加する
 List<Map<String, dynamic>> pages = [
   {
-    'name': 'volumeController',
+    'name': 'volume_controller',
     'page': const CustomVolumePage(),
   },
   {
@@ -23,11 +24,11 @@ List<Map<String, dynamic>> pages = [
     'page': const EcPage(),
   },
   {
-    'name': 'hideScreen',
+    'name': 'hide_screen',
     'page': const HideScreenPage(),
   },
   {
-    'name': 'colorBg',
+    'name': 'color_bg',
     'page': const ColorBgPage(),
   },
   {
@@ -35,8 +36,12 @@ List<Map<String, dynamic>> pages = [
     'page': const PerspectivePage(),
   },
   {
-    'name': 'slideSelect',
+    'name': 'slide_select',
     'page': const SlideSelectPage(),
+  },
+  {
+    'name': 'calendar',
+    'page': const CalendarPage(),
   },
 ];
 
