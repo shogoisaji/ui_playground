@@ -5,6 +5,8 @@ import 'package:ui_playground/pages/custom_valume_page.dart';
 import 'package:ui_playground/pages/ec_page.dart';
 import 'package:ui_playground/pages/hide_screen_page.dart';
 import 'package:ui_playground/pages/matrix4_list.dart';
+import 'package:ui_playground/pages/perspective_page.dart';
+import 'package:ui_playground/pages/slide_select_page.dart';
 
 // 新しいpageを追加する場合は、pagesリストにMapを追加する
 List<Map<String, dynamic>> pages = [
@@ -27,6 +29,14 @@ List<Map<String, dynamic>> pages = [
   {
     'name': 'colorBg',
     'page': const ColorBgPage(),
+  },
+  {
+    'name': 'perspective',
+    'page': const PerspectivePage(),
+  },
+  {
+    'name': 'slideSelect',
+    'page': const SlideSelectPage(),
   },
 ];
 
