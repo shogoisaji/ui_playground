@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:go_router/go_router.dart';
 
 class CalendarPage extends StatefulWidget {
   const CalendarPage({super.key});
@@ -168,18 +169,18 @@ class _CalendarPageState extends State<CalendarPage> with SingleTickerProviderSt
             },
           ),
           Positioned(
-            top: 30,
-            left: 5,
-            child: IconButton(
-                icon: const Icon(Icons.arrow_back, color: Colors.white, size: 30),
-                onPressed: () {
-                  Navigator.pop(context);
-                }),
-          ),
-          Positioned(
               top: MediaQuery.sizeOf(context).width * 0.85 * 1.52 + 70,
               left: 0,
               child: ListWidget(selectList: _selectList)),
+          // Positioned(
+          //   top: 50,
+          //   left: 5,
+          //   child: IconButton(
+          //       icon: const Icon(Icons.arrow_back, color: Colors.white, size: 30),
+          //       onPressed: () {
+          //         context.go('/');
+          //       }),
+          // ),
         ],
       ),
     );
@@ -199,7 +200,6 @@ class _CalendarWidgetState extends State<CalendarWidget> {
   @override
   Widget build(BuildContext context) {
     double _calendarPositionY = 0.0;
-    print("build ${_calendarPositionY}");
     final double _calenderWidth = MediaQuery.sizeOf(context).width * 0.85;
     return Container(
       decoration: BoxDecoration(
@@ -220,7 +220,17 @@ class _CalendarWidgetState extends State<CalendarWidget> {
           padding: const EdgeInsets.symmetric(horizontal: 8.0),
           child: Column(
             children: [
-              const SizedBox(height: 80),
+              const SizedBox(height: 70),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  IconButton(
+                      icon: const Icon(Icons.arrow_back, color: Colors.white, size: 30),
+                      onPressed: () {
+                        context.go('/');
+                      }),
+                ],
+              ),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 6.0),
                 child: Row(
@@ -238,7 +248,6 @@ class _CalendarWidgetState extends State<CalendarWidget> {
                       },
                       child: Text(
                         '2024/3',
-                        // "${selectedMonth.value["year"]}年${selectedMonth.value["month"]}月",
                         style: TextStyle(color: Colors.green[100], fontSize: 20, fontWeight: FontWeight.bold),
                       ),
                     ),
@@ -292,18 +301,15 @@ class _CalendarWidgetState extends State<CalendarWidget> {
               // カレンダー表示
               Expanded(
                 child: GridView.builder(
+                    padding: EdgeInsets.only(top: 12.0),
                     gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 7,
                       crossAxisSpacing: 0,
                       mainAxisSpacing: 0,
                     ),
                     itemCount: 30,
-                    // daysListGenerate(selectedMonth.value["year"]!, selectedMonth.value["month"]!).length +getFirstWeekDay(),
                     itemBuilder: (BuildContext context, int index) {
                       return Container(
-                        child: Center(
-                            child: Text((index + 1).toString(),
-                                style: TextStyle(color: Colors.green[900], fontSize: _calenderWidth / 25))),
                         width: _calenderWidth / 7.5,
                         decoration: BoxDecoration(
                           border: Border.all(width: 1.5, color: Colors.white),
@@ -311,6 +317,9 @@ class _CalendarWidgetState extends State<CalendarWidget> {
                           color: Colors.white,
                         ),
                         margin: const EdgeInsets.all(8.0),
+                        child: Center(
+                            child: Text((index + 1).toString(),
+                                style: TextStyle(color: Colors.green[900], fontSize: _calenderWidth / 25))),
                       );
                     }),
               ),
@@ -325,7 +334,6 @@ class _CalendarWidgetState extends State<CalendarWidget> {
                         });
                       },
                       onDragEnd: (details) {
-                        print("onDragEnd");
                         widget.onDragEnd();
                         setState(() {
                           _calendarPositionY = 0;

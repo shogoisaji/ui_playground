@@ -3,8 +3,10 @@ import 'package:go_router/go_router.dart';
 import 'package:ui_playground/pages/calendar_page.dart';
 import 'package:ui_playground/pages/color_bg.dart';
 import 'package:ui_playground/pages/custom_valume_page.dart';
+import 'package:ui_playground/pages/drag_list_page.dart';
 import 'package:ui_playground/pages/ec_page.dart';
 import 'package:ui_playground/pages/hide_screen_page.dart';
+import 'package:ui_playground/pages/interactive_selector.dart';
 import 'package:ui_playground/pages/matrix4_list.dart';
 import 'package:ui_playground/pages/perspective_page.dart';
 import 'package:ui_playground/pages/slide_select_page.dart';
@@ -42,6 +44,14 @@ List<Map<String, dynamic>> pages = [
   {
     'name': 'calendar',
     'page': const CalendarPage(),
+  },
+  {
+    'name': 'drag_list',
+    'page': const DragListPage(),
+  },
+  {
+    'name': 'interactive_selector',
+    'page': const InteractiveSelector(),
   },
 ];
 
