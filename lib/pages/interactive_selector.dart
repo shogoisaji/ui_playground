@@ -29,76 +29,186 @@ class _InteractiveSelectorState extends State<InteractiveSelector> with SingleTi
   @override
   Widget build(BuildContext context) {
     final w = MediaQuery.sizeOf(context).width;
+    final h = MediaQuery.sizeOf(context).height;
+
+    final _outerRadius = (w * 1.7) / 2;
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Interactive Selector'),
-      ),
-      body: Center(
-        child: Container(
-          color: Colors.green[100],
-          child: Stack(
-            fit: StackFit.expand,
-            children: [
-              Positioned(
-                bottom: 0,
-                child: SizedBox(
-                  width: w,
-                  height: w,
-                  child: AnimatedBuilder(
-                    animation: _animation,
-                    builder: (context, child) {
-                      return CustomPaint(
+      backgroundColor: Colors.blueGrey[400],
+      // appBar: AppBar(
+      //   title: const Text('Interactive Selector'),
+      // ),
+      body: Stack(
+        children: [
+          AnimatedBuilder(
+            animation: _animation,
+            builder: (context, child) {
+              return Stack(
+                children: [
+                  Positioned(
+                    bottom: 30,
+                    child: Container(
+                      width: w,
+                      height: 200,
+                      child: CustomPaint(
                         painter: SelectorPainter(
                             startAngle: math.pi * 0.35,
                             endAngle: math.pi * 0.35 + _animation.value.clamp(0, 1) * incrementAngle,
-                            objectHeight: 80,
-                            radius: (w * 1.7) / 2),
-                      );
-                    },
+                            objectHeight: 120,
+                            outerRadius: _outerRadius),
+                      ),
+                    ),
                   ),
-                ),
-              ),
-              Align(
-                alignment: Alignment.center,
-                child: ElevatedButton(
-                  onPressed: () {
-                    if (_controller.isCompleted) {
-                      _controller.reverse();
-                    } else {
-                      _controller.forward();
-                    }
-                  },
-                  child: const Text('Animate'),
-                ),
-              ),
-              Align(
-                  alignment: Alignment(0, -0.3),
-                  child: SizedBox(
-                    height: 100,
-                    child: Column(
-                      children: [
-                        SizedBox(
-                          width: 300,
-                          height: 50,
-                          child: Slider(
-                            min: 0,
-                            max: math.pi * 0.35,
-                            value: incrementAngle,
-                            onChanged: (value) {
-                              setState(() {
-                                incrementAngle = value;
-                              });
-                            },
+                  Positioned(
+                      top: -135 -
+                          (_outerRadius - h) +
+                          _outerRadius * math.sin(math.pi * 0.35 + _animation.value.clamp(0, 1) * incrementAngle),
+                      left: w / 2 -
+                          50 +
+                          ((w * 1.7) / 2 - 60) *
+                              math.cos(math.pi * 0.35 + _animation.value.clamp(0, 1) * incrementAngle),
+                      child: GestureDetector(
+                        onTap: () {
+                          if (_controller.isCompleted) {
+                            _controller.reverse();
+                          } else {
+                            _controller.forward();
+                          }
+                        },
+                        child: Opacity(
+                          opacity: _animation.value.clamp(0, 1),
+                          child: SizedBox(
+                            width: 100,
+                            height: 100,
+                            child: CustomPaint(
+                              painter: ButtonPainter(),
+                              child: Icon(
+                                Icons.history,
+                                color: Colors.white,
+                                size: 50,
+                              ),
+                            ),
                           ),
                         ),
-                        Text('Angle: ${incrementAngle.toStringAsFixed(2)}'),
-                      ],
-                    ),
-                  )),
-            ],
+                      )),
+                  Positioned(
+                      top: -135 -
+                          (_outerRadius - h) +
+                          _outerRadius *
+                              math.sin(math.pi * 0.35 + _animation.value.clamp(0, 1) * incrementAngle * 2 / 3),
+                      left: w / 2 -
+                          50 +
+                          ((w * 1.7) / 2 - 60) *
+                              math.cos(math.pi * 0.35 + _animation.value.clamp(0, 1) * incrementAngle * 2 / 3),
+                      child: GestureDetector(
+                        onTap: () {
+                          if (_controller.isCompleted) {
+                            _controller.reverse();
+                          } else {
+                            _controller.forward();
+                          }
+                        },
+                        child: Opacity(
+                          opacity: _animation.value.clamp(0, 1),
+                          child: SizedBox(
+                            width: 100,
+                            height: 100,
+                            child: CustomPaint(
+                              painter: ButtonPainter(),
+                              child: Icon(
+                                Icons.alarm,
+                                color: Colors.white,
+                                size: 50,
+                              ),
+                            ),
+                          ),
+                        ),
+                      )),
+                  Positioned(
+                      top: -135 -
+                          (_outerRadius - h) +
+                          _outerRadius * math.sin(math.pi * 0.35 + _animation.value.clamp(0, 1) * incrementAngle / 3),
+                      left: w / 2 -
+                          50 +
+                          ((w * 1.7) / 2 - 60) *
+                              math.cos(math.pi * 0.35 + _animation.value.clamp(0, 1) * incrementAngle / 3),
+                      child: GestureDetector(
+                        onTap: () {
+                          if (_controller.isCompleted) {
+                            _controller.reverse();
+                          } else {
+                            _controller.forward();
+                          }
+                        },
+                        child: Opacity(
+                          opacity: _animation.value.clamp(0, 1),
+                          child: SizedBox(
+                            width: 100,
+                            height: 100,
+                            child: CustomPaint(
+                              painter: ButtonPainter(),
+                              child: Icon(
+                                Icons.camera_alt,
+                                color: Colors.white,
+                                size: 50,
+                              ),
+                            ),
+                          ),
+                        ),
+                      )),
+                  Positioned(
+                      top: -136 - (_outerRadius - h) + _outerRadius * math.sin(math.pi * 0.35),
+                      left: w / 2 - 50 + ((w * 1.7) / 2 - 60) * math.cos(math.pi * 0.35),
+                      child: GestureDetector(
+                        onTap: () {
+                          if (_controller.isCompleted) {
+                            _controller.reverse();
+                          } else {
+                            _controller.forward();
+                          }
+                        },
+                        child: SizedBox(
+                          width: 100,
+                          height: 100,
+                          child: CustomPaint(
+                            painter: ButtonPainter(),
+                            child: Icon(
+                              Icons.map,
+                              color: Colors.white,
+                              size: 50,
+                            ),
+                          ),
+                        ),
+                      )),
+                ],
+              );
+            },
           ),
-        ),
+          Align(
+              alignment: Alignment(0, -0.3),
+              child: SizedBox(
+                height: 100,
+                child: Column(
+                  children: [
+                    SizedBox(
+                      width: 300,
+                      height: 50,
+                      child: Slider(
+                        min: 0,
+                        max: math.pi * 0.35,
+                        value: incrementAngle,
+                        onChanged: (value) {
+                          setState(() {
+                            incrementAngle = value;
+                          });
+                        },
+                      ),
+                    ),
+                    Text('Angle: ${incrementAngle.toStringAsFixed(2)}'),
+                  ],
+                ),
+              )),
+        ],
       ),
     );
   }
@@ -108,37 +218,23 @@ class SelectorPainter extends CustomPainter {
   final double startAngle;
   final double endAngle;
   final double objectHeight;
-  final double radius;
+  final double outerRadius;
   SelectorPainter(
-      {required this.startAngle, required double endAngle, required this.objectHeight, required this.radius})
+      {required this.startAngle, required double endAngle, required this.objectHeight, required this.outerRadius})
       : endAngle = endAngle >= startAngle ? endAngle : throw ArgumentError('endAngle must be greater than startAngle');
+
+  final GlobalKey buttonKey = GlobalKey();
 
   @override
   void paint(Canvas canvas, Size size) {
-    final outerRadius = radius;
     final innerRadius = outerRadius - objectHeight;
-    final Offset offsetCenter = Offset(size.width / 2, outerRadius / 2 - size.width / 2);
+    final Offset offsetCenter = Offset(size.width / 2, -(outerRadius - size.height));
 
     Offset calculateOffset(double angle, double radius) {
       double x = radius * math.cos(angle);
       double y = radius * math.sin(angle);
       return Offset(x, y);
     }
-
-    var paint = Paint()
-      ..color = Colors.orange[500]!
-      ..strokeWidth = 2
-      ..style = PaintingStyle.fill;
-    var paintBg = Paint()
-      ..color = Colors.orange[100]!
-      ..style = PaintingStyle.fill;
-    var paintBg2 = Paint()
-      ..color = Colors.blue[100]!
-      ..style = PaintingStyle.fill;
-
-    // canvas.translate(size.width / 2, outerRadius / 2);
-
-    Path path = Path();
 
     var rectOuter = Rect.fromCenter(
       center: offsetCenter,
@@ -161,16 +257,68 @@ class SelectorPainter extends CustomPainter {
       height: (outerRadius - innerRadius),
     );
 
+    var paint = Paint()
+      // ..color = Colors.orange[500]!
+      ..shader = LinearGradient(
+        colors: [Colors.black, Colors.blueGrey[800]!, Colors.black],
+      ).createShader(rectOuter)
+      ..strokeWidth = 2
+      ..style = PaintingStyle.fill;
+
+    Path path = Path();
+    Path innerPath = Path();
+
     path
       ..arcTo(rectOuter, startAngle, endAngle - startAngle, true)
       ..arcTo(rectLeft, endAngle, math.pi, true)
       ..arcTo(rectInner, endAngle, -(endAngle - startAngle), false)
       ..arcTo(rectRight, startAngle - math.pi, math.pi, false);
 
-    canvas.drawRect(rectOuter, paintBg);
+    innerPath
+      ..arcTo(rectOuter, startAngle, endAngle - startAngle, true)
+      ..arcTo(rectLeft, endAngle, math.pi, true)
+      ..arcTo(rectInner, endAngle, -(endAngle - startAngle), false)
+      ..arcTo(rectRight, startAngle - math.pi, math.pi, false);
+
+    // var paintBg = Paint()
+    //   ..color = Colors.orange[200]!
+    //   ..style = PaintingStyle.fill;
+
+    // canvas.drawRect(Rect.fromLTWH(0, 0, size.width, size.height), paintBg);
+    canvas.drawShadow(innerPath.shift(Offset(0, 3)), Colors.black.withOpacity(1.0), 3, false);
     canvas.drawPath(path, paint);
+    canvas.drawShadow(innerPath.shift(Offset(0, -objectHeight / 5)), Colors.white.withOpacity(0.4), 15, false);
   }
 
   @override
   bool shouldRepaint(CustomPainter oldDelegate) => true;
+}
+
+class ButtonPainter extends CustomPainter {
+  ButtonPainter();
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    var rectOuter = Rect.fromCenter(
+      center: Offset(size.width / 2, size.height / 2),
+      width: size.width,
+      height: size.height,
+    );
+
+    var paint = Paint()
+      // ..color = Colors.orange[500]!
+      ..color = Colors.black.withOpacity(0.9)
+      ..style = PaintingStyle.fill;
+    Path path = Path();
+
+    path..addOval(rectOuter);
+
+    // canvas.drawRect(rectOuter, paintBg);
+    canvas.drawShadow(path.shift(Offset(0, -2)), Colors.white.withOpacity(0.9), 3, false);
+    canvas.drawPath(path, paint);
+    canvas.drawShadow(path.shift(Offset(0, -25)), Colors.white.withOpacity(0.7), 20, true);
+  }
+
+  @override
+  bool shouldRepaint(CustomPainter oldDelegate) => false;
 }
