@@ -11,7 +11,30 @@ class InteractiveSelector extends StatefulWidget {
 class _InteractiveSelectorState extends State<InteractiveSelector> with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _animation;
-  double incrementAngle = 0.0;
+  double incrementAngle = 1.0;
+
+  final items = [
+    {
+      'icon': Icons.map,
+      'route': 'map',
+    },
+    {
+      'icon': Icons.camera_alt,
+      'route': 'camera',
+    },
+    {
+      'icon': Icons.alarm,
+      'route': 'alarm',
+    },
+    {
+      'icon': Icons.history,
+      'route': 'history',
+    },
+    {
+      'icon': Icons.train,
+      'route': 'train',
+    },
+  ];
 
   @override
   void initState() {
@@ -31,13 +54,44 @@ class _InteractiveSelectorState extends State<InteractiveSelector> with SingleTi
     final w = MediaQuery.sizeOf(context).width;
     final h = MediaQuery.sizeOf(context).height;
 
-    final _outerRadius = (w * 1.7) / 2;
+    const _buttonSize = 90.0;
+    const _bottomPadding = 150.0; // selector 全体のbottom padding
+    const _objectHeight = 120.0; // selectorの高さ
+
+    final _outerRadius = (w * 0.4) / 2; // selectorの外径
+    final _startAngle = math.pi * -0.25; // selectorの開始角度
+    final _endAngle = math.pi * 1.95; // selectorの終了角度
+    final _buttonRadius = _outerRadius - _objectHeight / 2; // button位置の半径
+
+    final Color _baseColor1 = Colors.orange[600]!;
+    final Color _baseColor2 = Colors.orange[900]!;
+    final Color _buttonColor = Colors.red[900]!;
+
+    // Positioned buttonのtop位置を計算
+    double calculateTopPosition(int index) {
+      final _position = -_bottomPadding -
+          _buttonSize / 2 -
+          (_outerRadius - h) +
+          _buttonRadius *
+              math.sin(_startAngle + _animation.value.clamp(0, 1) * incrementAngle * index / (items.length - 1));
+      return _position;
+    }
+
+    // Positioned buttonのleft位置を計算
+    double calculateLeftPosition(int index) {
+      final _position = w / 2 -
+          _buttonSize / 2 +
+          _buttonRadius *
+              math.cos(_startAngle + _animation.value.clamp(0, 1) * incrementAngle * index / (items.length - 1));
+      return _position;
+    }
 
     return Scaffold(
       backgroundColor: Colors.blueGrey[400],
-      // appBar: AppBar(
-      //   title: const Text('Interactive Selector'),
-      // ),
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        // title: const Text('Interactive Selector'),
+      ),
       body: Stack(
         children: [
           AnimatedBuilder(
@@ -46,140 +100,56 @@ class _InteractiveSelectorState extends State<InteractiveSelector> with SingleTi
               return Stack(
                 children: [
                   Positioned(
-                    bottom: 30,
+                    top: h - _bottomPadding,
+                    // bottom: 0,
                     child: Container(
                       width: w,
-                      height: 200,
+                      height: 0,
                       child: CustomPaint(
                         painter: SelectorPainter(
-                            startAngle: math.pi * 0.35,
-                            endAngle: math.pi * 0.35 + _animation.value.clamp(0, 1) * incrementAngle,
-                            objectHeight: 120,
-                            outerRadius: _outerRadius),
+                          startAngle: _startAngle,
+                          endAngle: _startAngle + _animation.value.clamp(0, 1) * incrementAngle,
+                          objectHeight: _objectHeight,
+                          outerRadius: _outerRadius,
+                          color1: _baseColor1,
+                          color2: _baseColor2,
+                        ),
                       ),
                     ),
                   ),
-                  Positioned(
-                      top: -135 -
-                          (_outerRadius - h) +
-                          _outerRadius * math.sin(math.pi * 0.35 + _animation.value.clamp(0, 1) * incrementAngle),
-                      left: w / 2 -
-                          50 +
-                          ((w * 1.7) / 2 - 60) *
-                              math.cos(math.pi * 0.35 + _animation.value.clamp(0, 1) * incrementAngle),
-                      child: GestureDetector(
-                        onTap: () {
-                          if (_controller.isCompleted) {
-                            _controller.reverse();
-                          } else {
-                            _controller.forward();
-                          }
-                        },
-                        child: Opacity(
-                          opacity: _animation.value.clamp(0, 1),
-                          child: SizedBox(
-                            width: 100,
-                            height: 100,
-                            child: CustomPaint(
-                              painter: ButtonPainter(),
-                              child: Icon(
-                                Icons.history,
-                                color: Colors.white,
-                                size: 50,
+                  ...List.generate(items.length, (index) {
+                    final reversedIndex = items.length - 1 - index;
+                    return Positioned(
+                        top: calculateTopPosition(reversedIndex),
+                        left: calculateLeftPosition(reversedIndex),
+                        child: GestureDetector(
+                          onTap: () {
+                            if (reversedIndex == 0) {
+                              if (_controller.isCompleted) {
+                                _controller.reverse();
+                              } else {
+                                _controller.forward();
+                              }
+                            }
+                            print('route: ${items[reversedIndex]['route']}'); // navigationなど
+                          },
+                          child: Opacity(
+                            opacity: reversedIndex == 0 ? 1 : _animation.value.clamp(0, 1),
+                            child: SizedBox(
+                              width: _buttonSize,
+                              height: _buttonSize,
+                              child: CustomPaint(
+                                painter: ButtonPainter(color: _buttonColor),
+                                child: Icon(
+                                  items[reversedIndex]['icon'] as IconData,
+                                  color: Colors.white,
+                                  size: _buttonSize / 2,
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                      )),
-                  Positioned(
-                      top: -135 -
-                          (_outerRadius - h) +
-                          _outerRadius *
-                              math.sin(math.pi * 0.35 + _animation.value.clamp(0, 1) * incrementAngle * 2 / 3),
-                      left: w / 2 -
-                          50 +
-                          ((w * 1.7) / 2 - 60) *
-                              math.cos(math.pi * 0.35 + _animation.value.clamp(0, 1) * incrementAngle * 2 / 3),
-                      child: GestureDetector(
-                        onTap: () {
-                          if (_controller.isCompleted) {
-                            _controller.reverse();
-                          } else {
-                            _controller.forward();
-                          }
-                        },
-                        child: Opacity(
-                          opacity: _animation.value.clamp(0, 1),
-                          child: SizedBox(
-                            width: 100,
-                            height: 100,
-                            child: CustomPaint(
-                              painter: ButtonPainter(),
-                              child: Icon(
-                                Icons.alarm,
-                                color: Colors.white,
-                                size: 50,
-                              ),
-                            ),
-                          ),
-                        ),
-                      )),
-                  Positioned(
-                      top: -135 -
-                          (_outerRadius - h) +
-                          _outerRadius * math.sin(math.pi * 0.35 + _animation.value.clamp(0, 1) * incrementAngle / 3),
-                      left: w / 2 -
-                          50 +
-                          ((w * 1.7) / 2 - 60) *
-                              math.cos(math.pi * 0.35 + _animation.value.clamp(0, 1) * incrementAngle / 3),
-                      child: GestureDetector(
-                        onTap: () {
-                          if (_controller.isCompleted) {
-                            _controller.reverse();
-                          } else {
-                            _controller.forward();
-                          }
-                        },
-                        child: Opacity(
-                          opacity: _animation.value.clamp(0, 1),
-                          child: SizedBox(
-                            width: 100,
-                            height: 100,
-                            child: CustomPaint(
-                              painter: ButtonPainter(),
-                              child: Icon(
-                                Icons.camera_alt,
-                                color: Colors.white,
-                                size: 50,
-                              ),
-                            ),
-                          ),
-                        ),
-                      )),
-                  Positioned(
-                      top: -136 - (_outerRadius - h) + _outerRadius * math.sin(math.pi * 0.35),
-                      left: w / 2 - 50 + ((w * 1.7) / 2 - 60) * math.cos(math.pi * 0.35),
-                      child: GestureDetector(
-                        onTap: () {
-                          if (_controller.isCompleted) {
-                            _controller.reverse();
-                          } else {
-                            _controller.forward();
-                          }
-                        },
-                        child: SizedBox(
-                          width: 100,
-                          height: 100,
-                          child: CustomPaint(
-                            painter: ButtonPainter(),
-                            child: Icon(
-                              Icons.map,
-                              color: Colors.white,
-                              size: 50,
-                            ),
-                          ),
-                        ),
-                      )),
+                        ));
+                  }),
                 ],
               );
             },
@@ -191,11 +161,11 @@ class _InteractiveSelectorState extends State<InteractiveSelector> with SingleTi
                 child: Column(
                   children: [
                     SizedBox(
-                      width: 300,
+                      width: 200,
                       height: 50,
                       child: Slider(
                         min: 0,
-                        max: math.pi * 0.35,
+                        max: _endAngle,
                         value: incrementAngle,
                         onChanged: (value) {
                           setState(() {
@@ -219,8 +189,15 @@ class SelectorPainter extends CustomPainter {
   final double endAngle;
   final double objectHeight;
   final double outerRadius;
+  final Color color1;
+  final Color color2;
   SelectorPainter(
-      {required this.startAngle, required double endAngle, required this.objectHeight, required this.outerRadius})
+      {required this.startAngle,
+      required double endAngle,
+      required this.objectHeight,
+      required this.outerRadius,
+      required this.color1,
+      required this.color2})
       : endAngle = endAngle >= startAngle ? endAngle : throw ArgumentError('endAngle must be greater than startAngle');
 
   final GlobalKey buttonKey = GlobalKey();
@@ -258,9 +235,8 @@ class SelectorPainter extends CustomPainter {
     );
 
     var paint = Paint()
-      // ..color = Colors.orange[500]!
       ..shader = LinearGradient(
-        colors: [Colors.black, Colors.blueGrey[800]!, Colors.black],
+        colors: [color2, color1, color2],
       ).createShader(rectOuter)
       ..strokeWidth = 2
       ..style = PaintingStyle.fill;
@@ -280,11 +256,6 @@ class SelectorPainter extends CustomPainter {
       ..arcTo(rectInner, endAngle, -(endAngle - startAngle), false)
       ..arcTo(rectRight, startAngle - math.pi, math.pi, false);
 
-    // var paintBg = Paint()
-    //   ..color = Colors.orange[200]!
-    //   ..style = PaintingStyle.fill;
-
-    // canvas.drawRect(Rect.fromLTWH(0, 0, size.width, size.height), paintBg);
     canvas.drawShadow(innerPath.shift(Offset(0, 3)), Colors.black.withOpacity(1.0), 3, false);
     canvas.drawPath(path, paint);
     canvas.drawShadow(innerPath.shift(Offset(0, -objectHeight / 5)), Colors.white.withOpacity(0.4), 15, false);
@@ -295,7 +266,8 @@ class SelectorPainter extends CustomPainter {
 }
 
 class ButtonPainter extends CustomPainter {
-  ButtonPainter();
+  final Color color;
+  ButtonPainter({required this.color});
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -306,14 +278,12 @@ class ButtonPainter extends CustomPainter {
     );
 
     var paint = Paint()
-      // ..color = Colors.orange[500]!
-      ..color = Colors.black.withOpacity(0.9)
+      ..color = color
       ..style = PaintingStyle.fill;
     Path path = Path();
 
-    path..addOval(rectOuter);
+    path.addOval(rectOuter);
 
-    // canvas.drawRect(rectOuter, paintBg);
     canvas.drawShadow(path.shift(Offset(0, -2)), Colors.white.withOpacity(0.9), 3, false);
     canvas.drawPath(path, paint);
     canvas.drawShadow(path.shift(Offset(0, -25)), Colors.white.withOpacity(0.7), 20, true);
