@@ -10,6 +10,7 @@ import 'package:ui_playground/pages/interactive_selector.dart';
 import 'package:ui_playground/pages/matrix4_list.dart';
 import 'package:ui_playground/pages/perspective_page.dart';
 import 'package:ui_playground/pages/slide_select_page.dart';
+import 'package:ui_playground/pages/spin_label_page.dart';
 
 // 新しいpageを追加する場合は、pagesリストにMapを追加する
 List<Map<String, dynamic>> pages = [
@@ -52,6 +53,10 @@ List<Map<String, dynamic>> pages = [
   {
     'name': 'interactive_selector',
     'page': const InteractiveSelector(),
+  },
+  {
+    'name': 'spin_label',
+    'page': const SpinLabelPage(),
   },
 ];
 

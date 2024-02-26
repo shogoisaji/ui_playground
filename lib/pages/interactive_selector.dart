@@ -9,6 +9,11 @@ class InteractiveSelector extends StatefulWidget {
 }
 
 class _InteractiveSelectorState extends State<InteractiveSelector> with SingleTickerProviderStateMixin {
+  static const _BUTTON_SIZE = 90.0; // buttonのサイズ
+  static const _BOTTOM_PADDING = 150.0; // selector 全体のbottom padding
+  static const _OBJECT_HEIGHT = 120.0; // selectorの高さ
+  static const _START_ANGLE = math.pi * -0.25; // selectorの開始角度
+  static const _END_ANGLE = math.pi * 1.95; // selectorの終了角度
   late AnimationController _controller;
   late Animation<double> _animation;
   double incrementAngle = 1.0;
@@ -54,14 +59,8 @@ class _InteractiveSelectorState extends State<InteractiveSelector> with SingleTi
     final w = MediaQuery.sizeOf(context).width;
     final h = MediaQuery.sizeOf(context).height;
 
-    const _buttonSize = 90.0;
-    const _bottomPadding = 150.0; // selector 全体のbottom padding
-    const _objectHeight = 120.0; // selectorの高さ
-
     final _outerRadius = (w * 0.4) / 2; // selectorの外径
-    final _startAngle = math.pi * -0.25; // selectorの開始角度
-    final _endAngle = math.pi * 1.95; // selectorの終了角度
-    final _buttonRadius = _outerRadius - _objectHeight / 2; // button位置の半径
+    final _buttonRadius = _outerRadius - _OBJECT_HEIGHT / 2; // button位置の半径
 
     final Color _baseColor1 = Colors.orange[600]!;
     final Color _baseColor2 = Colors.orange[900]!;
@@ -69,20 +68,20 @@ class _InteractiveSelectorState extends State<InteractiveSelector> with SingleTi
 
     // Positioned buttonのtop位置を計算
     double calculateTopPosition(int index) {
-      final _position = -_bottomPadding -
-          _buttonSize / 2 -
+      final _position = -_BOTTOM_PADDING -
+          _BUTTON_SIZE / 2 -
           (_outerRadius - h) +
           _buttonRadius *
-              math.sin(_startAngle + _animation.value.clamp(0, 1) * incrementAngle * index / (items.length - 1));
+              math.sin(_START_ANGLE + _animation.value.clamp(0, 1) * incrementAngle * index / (items.length - 1));
       return _position;
     }
 
     // Positioned buttonのleft位置を計算
     double calculateLeftPosition(int index) {
       final _position = w / 2 -
-          _buttonSize / 2 +
+          _BUTTON_SIZE / 2 +
           _buttonRadius *
-              math.cos(_startAngle + _animation.value.clamp(0, 1) * incrementAngle * index / (items.length - 1));
+              math.cos(_START_ANGLE + _animation.value.clamp(0, 1) * incrementAngle * index / (items.length - 1));
       return _position;
     }
 
@@ -100,16 +99,16 @@ class _InteractiveSelectorState extends State<InteractiveSelector> with SingleTi
               return Stack(
                 children: [
                   Positioned(
-                    top: h - _bottomPadding,
+                    top: h - _BOTTOM_PADDING,
                     // bottom: 0,
                     child: Container(
                       width: w,
                       height: 0,
                       child: CustomPaint(
                         painter: SelectorPainter(
-                          startAngle: _startAngle,
-                          endAngle: _startAngle + _animation.value.clamp(0, 1) * incrementAngle,
-                          objectHeight: _objectHeight,
+                          startAngle: _START_ANGLE,
+                          endAngle: _START_ANGLE + _animation.value.clamp(0, 1) * incrementAngle,
+                          objectHeight: _OBJECT_HEIGHT,
                           outerRadius: _outerRadius,
                           color1: _baseColor1,
                           color2: _baseColor2,
@@ -136,14 +135,14 @@ class _InteractiveSelectorState extends State<InteractiveSelector> with SingleTi
                           child: Opacity(
                             opacity: reversedIndex == 0 ? 1 : _animation.value.clamp(0, 1),
                             child: SizedBox(
-                              width: _buttonSize,
-                              height: _buttonSize,
+                              width: _BUTTON_SIZE,
+                              height: _BUTTON_SIZE,
                               child: CustomPaint(
                                 painter: ButtonPainter(color: _buttonColor),
                                 child: Icon(
                                   items[reversedIndex]['icon'] as IconData,
                                   color: Colors.white,
-                                  size: _buttonSize / 2,
+                                  size: _BUTTON_SIZE / 2,
                                 ),
                               ),
                             ),
@@ -165,7 +164,7 @@ class _InteractiveSelectorState extends State<InteractiveSelector> with SingleTi
                       height: 50,
                       child: Slider(
                         min: 0,
-                        max: _endAngle,
+                        max: _END_ANGLE,
                         value: incrementAngle,
                         onChanged: (value) {
                           setState(() {
