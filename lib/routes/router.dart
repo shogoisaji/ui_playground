@@ -15,48 +15,48 @@ import 'package:ui_playground/pages/spin_label_page.dart';
 // 新しいpageを追加する場合は、pagesリストにMapを追加する
 List<Map<String, dynamic>> pages = [
   {
-    'name': 'volume_controller',
-    'page': const CustomVolumePage(),
-  },
-  {
-    'name': 'matrix4List',
-    'page': const Matrix4ListPage(),
-  },
-  {
-    'name': 'ec',
-    'page': const EcPage(),
-  },
-  {
-    'name': 'hide_screen',
-    'page': const HideScreenPage(),
-  },
-  {
-    'name': 'color_bg',
-    'page': const ColorBgPage(),
-  },
-  {
-    'name': 'perspective',
-    'page': const PerspectivePage(),
-  },
-  {
-    'name': 'slide_select',
-    'page': const SlideSelectPage(),
-  },
-  {
-    'name': 'calendar',
-    'page': const CalendarPage(),
-  },
-  {
-    'name': 'drag_list',
-    'page': const DragListPage(),
+    'name': 'spin_label',
+    'page': const SpinLabelPage(),
   },
   {
     'name': 'interactive_selector',
     'page': const InteractiveSelector(),
   },
   {
-    'name': 'spin_label',
-    'page': const SpinLabelPage(),
+    'name': 'drag_list',
+    'page': const DragListPage(),
+  },
+  {
+    'name': 'calendar',
+    'page': const CalendarPage(),
+  },
+  {
+    'name': 'slide_select',
+    'page': const SlideSelectPage(),
+  },
+  {
+    'name': 'perspective',
+    'page': const PerspectivePage(),
+  },
+  {
+    'name': 'color_bg',
+    'page': const ColorBgPage(),
+  },
+  {
+    'name': 'hide_screen',
+    'page': const HideScreenPage(),
+  },
+  {
+    'name': 'ec',
+    'page': const EcPage(),
+  },
+  {
+    'name': 'matrix4List',
+    'page': const Matrix4ListPage(),
+  },
+  {
+    'name': 'volume_controller',
+    'page': const CustomVolumePage(),
   },
 ];
 
