@@ -149,7 +149,7 @@ class _PerspectivePageState extends State<PerspectivePage> with SingleTickerProv
           _isViewShown
               ? Container()
               : Align(
-                  alignment: Alignment(0.0, 0.3),
+                  alignment: const Alignment(0.0, 0.3),
                   child: ElevatedButton(
                     onPressed: () {
                       setState(() {
@@ -158,8 +158,9 @@ class _PerspectivePageState extends State<PerspectivePage> with SingleTickerProv
                       });
                       if (_controller.status == AnimationStatus.completed) {
                         _controller.reverse();
-                      } else
+                      } else {
                         _controller.forward();
+                      }
                     },
                     child: const Text('select'),
                   ),
@@ -192,13 +193,6 @@ class PerspectivePainter extends CustomPainter {
         bottomHeight * (1 - hValueLower) / 2 + hValueLower * bottomHeight); //右下
     final Offset p4 = Offset(
         w * (1 - wValue) / 2 + sideOffset, bottomHeight * (1 - hValueLower) / 2 + hValueLower * bottomHeight); //左下
-    var paint = Paint()
-      ..color = Colors.green[200]!
-      ..strokeWidth = 1
-      ..style = PaintingStyle.stroke;
-    var paint0 = Paint()
-      ..color = Colors.green[200]!
-      ..style = PaintingStyle.fill;
     var paint1 = Paint()
       ..color = Colors.green[400]!
       ..style = PaintingStyle.fill;
@@ -271,10 +265,10 @@ class PerspectivePainter extends CustomPainter {
 
     final Rect rect = Rect.fromPoints(Offset(p1.dx + 15, p1.dy + 15), Offset(p3.dx - 15, p3.dy + 15));
     final RRect rRect = RRect.fromRectAndRadius(
-        Rect.fromPoints(Offset(p1.dx + 10, p1.dy + 20), Offset(p3.dx - 10, p3.dy + 20)), Radius.circular(20));
+        Rect.fromPoints(Offset(p1.dx + 10, p1.dy + 20), Offset(p3.dx - 10, p3.dy + 20)), const Radius.circular(20));
 
     // 角が丸い矩形のパスを作成
-    final Path pathI = Path()..addRRect(RRect.fromRectAndRadius(rect, Radius.circular(20))); // ここで角の丸みを調整
+    final Path pathI = Path()..addRRect(RRect.fromRectAndRadius(rect, const Radius.circular(20))); // ここで角の丸みを調整
     canvas.drawRRect(rRect, shadowPaint);
 
     canvas.clipPath(pathI);

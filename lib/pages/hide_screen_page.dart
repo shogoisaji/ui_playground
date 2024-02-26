@@ -62,15 +62,13 @@ class _HideScreenPageState extends State<HideScreenPage> with TickerProviderStat
             Image.asset(
               'assets/images/elephant.jpg',
               fit: BoxFit.fill,
-              // width: double.infinity,
-              // height: double.infinity,
             ),
             AnimatedBuilder(
               animation: _animation,
               builder: (context, child) {
                 return CustomPaint(
                   painter: HideCustomPainter(animateValue: 1 - _animation.value, offset: _offset),
-                  child: Container(
+                  child: const SizedBox(
                     width: double.infinity,
                     height: double.infinity,
                   ),
@@ -84,8 +82,6 @@ class _HideScreenPageState extends State<HideScreenPage> with TickerProviderStat
                 });
               },
               child: Container(
-                // width: double.infinity,
-                // height: double.infinity,
                 color: Colors.transparent,
               ),
             ),
@@ -102,7 +98,7 @@ class _HideScreenPageState extends State<HideScreenPage> with TickerProviderStat
               animation: _animation,
               builder: (context, child) {
                 return Align(
-                  alignment: Alignment(0.0, 0.85 + 2 * (1 - _animation!.value)),
+                  alignment: Alignment(0.0, 0.85 + 2 * (1 - _animation.value)),
                   child: Opacity(
                     opacity: _controller!.value,
                     child: SizedBox(

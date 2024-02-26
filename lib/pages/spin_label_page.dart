@@ -77,8 +77,6 @@ class _SpinLabelPageState extends State<SpinLabelPage> with SingleTickerProvider
 
   @override
   Widget build(BuildContext context) {
-    final w = MediaQuery.sizeOf(context).width;
-    final h = MediaQuery.sizeOf(context).height;
     matrix = ((rotateY + math.pi / 2) ~/ (math.pi)).isEven
         ? (Matrix4.identity()..rotateY(rotateY))
         : (Matrix4.identity()..rotateY(rotateY + math.pi));

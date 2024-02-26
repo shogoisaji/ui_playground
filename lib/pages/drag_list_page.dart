@@ -17,7 +17,6 @@ class _DragListPageState extends State<DragListPage> {
   bool _isScrollable = false;
   bool _isShowListView = false;
   double _listViewHeight = 0.0;
-  final _listViewMaxHeight = 500.0;
 
   double _listViewUpperPosition = 0.0;
   final _listViewKey = GlobalKey();
@@ -57,17 +56,12 @@ class _DragListPageState extends State<DragListPage> {
         });
       }
       singleChildScrollController.position.addListener(() {
-        final position = renderBox?.localToGlobal(Offset.zero);
-
         setState(() {
           _listViewUpperPosition = singleChildScrollController.offset;
-          print('singleChildScrollController.offset: ${singleChildScrollController.offset}');
-          // _listViewUpperPosition = position?.dy ?? 0.0;
           if (_listViewUpperPosition > 250) {
             _isScrollable = false;
             _listViewHeight = screenHeight - _listViewUpperPosition - 100;
           } else {
-            // singleChildScrollController.jumpTo(singleChildScrollController.offset);
             _listViewHeight = screenHeight + _listViewUpperPosition;
             _isScrollable = true;
           }
@@ -94,7 +88,7 @@ class _DragListPageState extends State<DragListPage> {
                 Container(
                     width: double.infinity,
                     height: 200,
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       color: Colors.blue,
                     )),
                 Container(
@@ -122,17 +116,9 @@ class _DragListPageState extends State<DragListPage> {
                               _isScrollable = false;
                             });
                           },
-                          // shrinkWrap: true,
-                          // physics: const NeverScrollableScrollPhysics(),
                           physics: _isScrollable
                               ? const AlwaysScrollableScrollPhysics()
                               : const NeverScrollableScrollPhysics(),
-                          children: [
-                            ...{
-                              for (var i = 0; i < items.length; i++)
-                                ListTile(key: ValueKey(i), title: Text('Item ${i + 1}'))
-                            }
-                          ],
                           buildDefaultDragHandles: true,
                           onReorder: (oldIndex, newIndex) {
                             setState(() {
@@ -143,13 +129,19 @@ class _DragListPageState extends State<DragListPage> {
                               items.insert(newIndex, item);
                             });
                           },
+                          children: [
+                            ...{
+                              for (var i = 0; i < items.length; i++)
+                                ListTile(key: ValueKey(i), title: Text('Item ${i + 1}'))
+                            }
+                          ],
                         ),
                       ),
                       SizedBox(
                         width: double.infinity,
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            primary: Colors.green,
+                            backgroundColor: Colors.green,
                           ),
                           onPressed: () {
                             //
@@ -160,15 +152,10 @@ class _DragListPageState extends State<DragListPage> {
                     ],
                   ),
                 ),
-                // Container(
-                //   width: double.infinity,
-                //   height: 200,
-                //   decoration: BoxDecoration(color: Colors.red, borderRadius: BorderRadius.circular(10)),
-                // ),
                 Container(
                     width: double.infinity,
                     height: 200,
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       color: Colors.blue,
                     )),
               ])),

@@ -10,7 +10,7 @@ class CalendarPage extends StatefulWidget {
 }
 
 class _CalendarPageState extends State<CalendarPage> with SingleTickerProviderStateMixin {
-  Offset _calendarPosition = const Offset(0, 0);
+  Offset calendarPosition = const Offset(0, 0);
   late AnimationController? _controller;
   late Animation<double>? _animation;
   String selectListString = '';
@@ -35,13 +35,6 @@ class _CalendarPageState extends State<CalendarPage> with SingleTickerProviderSt
     final double h = MediaQuery.sizeOf(context).height;
     void _onDragUpdate(double deltaY) {
       _controller!.value -= deltaY / _range;
-
-      // setState(() {
-      //   final double nextY = (_calendarPosition.dy + y).clamp(-100, 0);
-      //   _calendarPosition = Offset(0, nextY);
-      // });
-      print(_controller!.value);
-      print(deltaY);
     }
 
     void _resetCalendarPosition() {
@@ -148,7 +141,7 @@ class _CalendarPageState extends State<CalendarPage> with SingleTickerProviderSt
                       width: MediaQuery.sizeOf(context).width * 0.85 - nextLeft / 3,
                       height: MediaQuery.sizeOf(context).width * 0.85 * 1.52 - nextLeft,
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.only(bottomRight: Radius.circular(20)),
+                        borderRadius: const BorderRadius.only(bottomRight: Radius.circular(20)),
                         boxShadow: [
                           BoxShadow(
                             color: Colors.black.withOpacity(0.5),
@@ -197,9 +190,10 @@ class CalendarWidget extends StatefulWidget {
 }
 
 class _CalendarWidgetState extends State<CalendarWidget> {
+  double calendarPositionY = 0.0;
+
   @override
   Widget build(BuildContext context) {
-    double _calendarPositionY = 0.0;
     final double _calenderWidth = MediaQuery.sizeOf(context).width * 0.85;
     return Container(
       decoration: BoxDecoration(
@@ -211,7 +205,7 @@ class _CalendarWidgetState extends State<CalendarWidget> {
             Colors.blueGrey[900]!,
           ],
         ),
-        borderRadius: BorderRadius.only(bottomRight: Radius.circular(20)),
+        borderRadius: const BorderRadius.only(bottomRight: Radius.circular(20)),
       ),
       child: SizedBox(
         width: _calenderWidth,
@@ -301,7 +295,7 @@ class _CalendarWidgetState extends State<CalendarWidget> {
               // カレンダー表示
               Expanded(
                 child: GridView.builder(
-                    padding: EdgeInsets.only(top: 12.0),
+                    padding: const EdgeInsets.only(top: 12.0),
                     gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 7,
                       crossAxisSpacing: 0,
@@ -330,16 +324,16 @@ class _CalendarWidgetState extends State<CalendarWidget> {
                       onDragUpdate: (details) {
                         widget.onDragUpdate(details.delta.dy);
                         setState(() {
-                          _calendarPositionY += details.delta.dy;
+                          calendarPositionY += details.delta.dy;
                         });
                       },
                       onDragEnd: (details) {
                         widget.onDragEnd();
                         setState(() {
-                          _calendarPositionY = 0;
+                          calendarPositionY = 0;
                         });
                       },
-                      feedback: Icon(Icons.drag_handle, color: Colors.transparent),
+                      feedback: const Icon(Icons.drag_handle, color: Colors.transparent),
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Icon(Icons.drag_handle, color: Colors.green[100]),
@@ -412,7 +406,7 @@ class _ListWidgetState extends State<ListWidget> {
               padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 2.0),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
-                color: Color.fromARGB(255, 66, 88, 67),
+                color: const Color.fromARGB(255, 66, 88, 67),
               ),
               child: ListView.builder(
                   padding: EdgeInsets.zero,
