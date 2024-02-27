@@ -14,17 +14,17 @@ class _SpinLabelPageState extends State<SpinLabelPage> with SingleTickerProvider
   late AnimationController _controller;
   late Animation<double> _spinAnimation;
   late Animation<double> _scaleAnimation;
-  double _thickness = 30;
   double rotateY = 0.0;
   bool _isFront = true;
   bool _isShow = false;
-  Offset _imagePosition = Offset.zero;
   late Matrix4 matrix;
   late double convertedThickness;
 
+  static const double _THICKNESS = 30;
   static const _LABEL_SIZE = 100.0;
 
-  final GlobalKey _imageKey = GlobalKey();
+  final GlobalKey _imageKey = GlobalKey(); // account image のpositionを取得するためのkey
+  Offset _imagePosition = Offset.zero;
 
   @override
   void initState() {
@@ -47,7 +47,7 @@ class _SpinLabelPageState extends State<SpinLabelPage> with SingleTickerProvider
     _controller.addListener(() {
       setState(() {
         rotateY = _spinAnimation.value * 1 * math.pi;
-        convertedThickness = math.sin(rotateY) * _thickness;
+        convertedThickness = math.sin(rotateY) * _THICKNESS;
 
         if (((rotateY + math.pi / 2) ~/ math.pi).isEven) {
           _isFront = true;
@@ -56,7 +56,7 @@ class _SpinLabelPageState extends State<SpinLabelPage> with SingleTickerProvider
         }
       });
     });
-    convertedThickness = math.sin(rotateY) * _thickness;
+    convertedThickness = math.sin(rotateY) * _THICKNESS;
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (_imageKey.currentContext == null) return;
@@ -65,7 +65,6 @@ class _SpinLabelPageState extends State<SpinLabelPage> with SingleTickerProvider
       setState(() {
         _imagePosition = position;
       });
-      print("Image Widget Position: ${position.dx}, ${position.dy}");
     });
   }
 
@@ -85,7 +84,6 @@ class _SpinLabelPageState extends State<SpinLabelPage> with SingleTickerProvider
       backgroundColor: Colors.blue[400],
       appBar: AppBar(
         backgroundColor: Colors.transparent,
-        // title: const Text('Spin Label'),
       ),
       body: Center(
         child: Stack(
@@ -100,7 +98,7 @@ class _SpinLabelPageState extends State<SpinLabelPage> with SingleTickerProvider
                   9 -
                   AppBar().preferredSize.height +
                   _imagePosition.dy * (1 + _scaleAnimation.value),
-              left: _LABEL_SIZE / 2 + _imagePosition.dx - (_LABEL_SIZE + _thickness) / 2 + _scaleAnimation.value * 120,
+              left: _LABEL_SIZE / 2 + _imagePosition.dx - (_LABEL_SIZE + _THICKNESS) / 2 + _scaleAnimation.value * 120,
               child: Transform.scale(
                 scale: 1 + _scaleAnimation.value * 2,
                 child: Opacity(
@@ -116,7 +114,7 @@ class _SpinLabelPageState extends State<SpinLabelPage> with SingleTickerProvider
                       ],
                       shape: BoxShape.circle,
                     ),
-                    width: _LABEL_SIZE + _thickness + 5,
+                    width: _LABEL_SIZE + _THICKNESS + 5,
                     height: _LABEL_SIZE + 5,
                   ),
                 ),
@@ -127,21 +125,21 @@ class _SpinLabelPageState extends State<SpinLabelPage> with SingleTickerProvider
                   9 -
                   AppBar().preferredSize.height +
                   _imagePosition.dy * (1 + _scaleAnimation.value),
-              left: _LABEL_SIZE / 2 + _imagePosition.dx - (_LABEL_SIZE + _thickness) / 2 + _scaleAnimation.value * 120,
+              left: _LABEL_SIZE / 2 + _imagePosition.dx - (_LABEL_SIZE + _THICKNESS) / 2 + _scaleAnimation.value * 120,
               child: Transform.scale(
                 scale: 1 + _scaleAnimation.value * 2,
                 child: Container(
                   // color: Colors.red[800],
-                  width: _LABEL_SIZE + _thickness,
+                  width: _LABEL_SIZE + _THICKNESS,
                   height: _LABEL_SIZE,
                   child: Stack(
                     alignment: Alignment.center,
                     children: [
                       Positioned(
                         top: 0,
-                        left: -convertedThickness / 2 + _LABEL_SIZE / 2 + _thickness / 2,
+                        left: -convertedThickness / 2 + _LABEL_SIZE / 2 + _THICKNESS / 2,
                         child: SizedBox(
-                          width: _LABEL_SIZE + _thickness,
+                          width: _LABEL_SIZE + _THICKNESS,
                           height: _LABEL_SIZE,
                           child: CustomPaint(
                             painter: LabelSidePainter(
@@ -154,13 +152,12 @@ class _SpinLabelPageState extends State<SpinLabelPage> with SingleTickerProvider
                       ),
                       Positioned(
                         left: _isFront
-                            ? -_LABEL_SIZE / 2 - convertedThickness / 2 + _LABEL_SIZE / 2 + _thickness / 2
-                            : -_LABEL_SIZE / 2 + convertedThickness / 2 + _LABEL_SIZE / 2 + _thickness / 2,
+                            ? -_LABEL_SIZE / 2 - convertedThickness / 2 + _LABEL_SIZE / 2 + _THICKNESS / 2
+                            : -_LABEL_SIZE / 2 + convertedThickness / 2 + _LABEL_SIZE / 2 + _THICKNESS / 2,
                         child: GestureDetector(
                           onTap: () {
                             if (_controller.isCompleted) {
                               _controller.reverse(from: 0.4);
-
                               Future.delayed(const Duration(milliseconds: 1000), () {
                                 setState(() {
                                   _isShow = false;
@@ -282,10 +279,6 @@ class LabelSidePainter extends CustomPainter {
       ..cubicTo(p9.dx, p9.dy, p10.dx, p10.dy, p11.dx, p11.dy)
       ..cubicTo(p12.dx, p12.dy, p13.dx, p13.dy, p14.dx, p14.dy);
 
-    // final Path shadowPath = Path();
-    // shadowPath.addOval(Rect.fromCircle(center: Offset(0, size.height / 2), radius: radius + 3));
-
-    // canvas.drawShadow(shadowPath.shift(Offset(0, 3)), Colors.black.withOpacity(1.0), 3, false);
     canvas.drawPath(path, paint);
   }
 
