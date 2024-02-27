@@ -28,7 +28,7 @@ class _TagSelectorState extends State<TagSelector> with SingleTickerProviderStat
     _centerObjectAnimation = CurvedAnimation(parent: _centerObjectController, curve: Curves.easeOutCubic);
     _centerItemAnimation = CurvedAnimation(
       parent: _centerObjectController,
-      curve: Interval(
+      curve: const Interval(
         0.0,
         0.5,
         curve: Curves.easeIn,
@@ -37,13 +37,20 @@ class _TagSelectorState extends State<TagSelector> with SingleTickerProviderStat
     _itemsAnimation = Tween<double>(begin: 0.0, end: 1).animate(
       CurvedAnimation(
         parent: _centerObjectController,
-        curve: Interval(
+        curve: const Interval(
           0.6,
           1.0,
           curve: Curves.easeOut,
         ),
       ),
     );
+  }
+
+  void selectIcon(IconData icon) {
+    setState(() {
+      _selectedIcon = icon;
+    });
+    _centerObjectController.reverse(from: 0.6);
   }
 
   @override
@@ -62,6 +69,7 @@ class _TagSelectorState extends State<TagSelector> with SingleTickerProviderStat
       body: Stack(
         fit: StackFit.expand,
         children: <Widget>[
+          // selected icon view
           Center(
               child: Container(
             width: 150,
@@ -80,6 +88,7 @@ class _TagSelectorState extends State<TagSelector> with SingleTickerProviderStat
               color: Colors.orange[700],
             ),
           )),
+          // navigation bar
           Positioned(
             bottom: 0,
             left: 0,
@@ -91,7 +100,7 @@ class _TagSelectorState extends State<TagSelector> with SingleTickerProviderStat
               child: Stack(
                 children: [
                   Positioned(
-                    bottom: _navbarHeight - 60 + 10,
+                    bottom: _navbarHeight - 60 + 10, // 初期の小さい玉の高さ
                     left: MediaQuery.sizeOf(context).width / 2 - _centerObjectSize / 2,
                     child: AnimatedBuilder(
                         animation: _centerObjectAnimation,
@@ -109,7 +118,6 @@ class _TagSelectorState extends State<TagSelector> with SingleTickerProviderStat
                               child: Container(
                                   width: _centerObjectSize,
                                   height: _centerObjectSize,
-                                  // padding: const EdgeInsets.all(18),
                                   decoration: BoxDecoration(
                                     color: Colors.blueGrey[900],
                                     shape: BoxShape.circle,
@@ -127,89 +135,42 @@ class _TagSelectorState extends State<TagSelector> with SingleTickerProviderStat
                                     builder: (context, child) => Stack(
                                       children: [
                                         Center(
-                                          child: Container(
-                                              width: _centerObjectSize * 0.55,
-                                              height: _centerObjectSize * 0.55,
-                                              alignment: Alignment.center,
-                                              decoration: BoxDecoration(shape: BoxShape.circle, boxShadow: [
-                                                BoxShadow(
-                                                  color: Colors.white.withOpacity(0.2),
-                                                  spreadRadius: 15,
-                                                  blurRadius: 10,
-                                                  offset: const Offset(0, 1),
-                                                )
-                                              ]),
-                                              child: AnimatedBuilder(
-                                                animation: _centerItemAnimation,
-                                                builder: (context, child) => Opacity(
-                                                  opacity: 1 - _centerItemAnimation.value,
-                                                  child: Icon(
-                                                    Icons.room,
-                                                    color: Colors.white,
-                                                    size: 36,
-                                                  ),
-                                                ),
-                                              )),
+                                          child:
+                                              // inner shadow
+                                              Container(
+                                                  width: _centerObjectSize * 0.55,
+                                                  height: _centerObjectSize * 0.55,
+                                                  alignment: Alignment.center,
+                                                  decoration: BoxDecoration(shape: BoxShape.circle, boxShadow: [
+                                                    BoxShadow(
+                                                      color: Colors.white.withOpacity(0.2),
+                                                      spreadRadius: 15,
+                                                      blurRadius: 10,
+                                                      offset: const Offset(0, 1),
+                                                    )
+                                                  ]),
+                                                  child:
+                                                      // center initial icon
+                                                      AnimatedBuilder(
+                                                    animation: _centerItemAnimation,
+                                                    builder: (context, child) => Opacity(
+                                                      opacity: 1 - _centerItemAnimation.value,
+                                                      child: const Icon(
+                                                        Icons.room,
+                                                        color: Colors.white,
+                                                        size: 36,
+                                                      ),
+                                                    ),
+                                                  )),
                                         ),
-                                        Opacity(
-                                          opacity: _itemsAnimation.value,
-                                          child: Transform.rotate(
-                                            angle: -1.1,
-                                            child: GestureDetector(
-                                                onTap: () {
-                                                  setState(() {
-                                                    _selectedIcon = Icons.directions_run;
-                                                  });
-                                                  _centerObjectController.reverse(from: 0.6);
-                                                },
-                                                child: _selectItem(Icons.directions_run, _centerObjectSize)),
-                                          ),
-                                        ),
-                                        Opacity(
-                                          opacity: _itemsAnimation.value,
-                                          child: GestureDetector(
-                                            onTap: () {
-                                              setState(() {
-                                                _selectedIcon = Icons.directions_car;
-                                              });
-                                              _centerObjectController.reverse(from: 0.6);
-                                            },
-                                            child: Transform.rotate(
-                                              angle: -0.4,
-                                              child: _selectItem(Icons.directions_car, _centerObjectSize),
-                                            ),
-                                          ),
-                                        ),
-                                        Opacity(
-                                          opacity: _itemsAnimation.value,
-                                          child: GestureDetector(
-                                            onTap: () {
-                                              setState(() {
-                                                _selectedIcon = Icons.directions_bus;
-                                              });
-                                              _centerObjectController.reverse(from: 0.6);
-                                            },
-                                            child: Transform.rotate(
-                                              angle: 0.4,
-                                              child: _selectItem(Icons.directions_subway, _centerObjectSize),
-                                            ),
-                                          ),
-                                        ),
-                                        Opacity(
-                                          opacity: _itemsAnimation.value,
-                                          child: GestureDetector(
-                                            onTap: () {
-                                              setState(() {
-                                                _selectedIcon = Icons.directions_bike;
-                                              });
-                                              _centerObjectController.reverse(from: 0.6);
-                                            },
-                                            child: Transform.rotate(
-                                              angle: 1.1,
-                                              child: _selectItem(Icons.directions_bike, _centerObjectSize),
-                                            ),
-                                          ),
-                                        ),
+                                        _selectItem(Icons.directions_run, _centerObjectSize, _itemsAnimation.value,
+                                            -1.1, selectIcon),
+                                        _selectItem(Icons.directions_car, _centerObjectSize, _itemsAnimation.value,
+                                            -0.4, selectIcon),
+                                        _selectItem(Icons.directions_bus, _centerObjectSize, _itemsAnimation.value, 0.4,
+                                            selectIcon),
+                                        _selectItem(Icons.directions_bike, _centerObjectSize, _itemsAnimation.value,
+                                            1.1, selectIcon),
                                       ],
                                     ),
                                   )),
@@ -245,55 +206,66 @@ class _TagSelectorState extends State<TagSelector> with SingleTickerProviderStat
   }
 }
 
-Widget _selectItem(IconData icon, double centerObjectSize) {
-  return Column(
-    mainAxisAlignment: MainAxisAlignment.start,
-    children: [
-      Expanded(
-        child: Stack(
-          children: [
-            Positioned(
-              top: -30, // 調整
-              left: 0,
-              child: SizedBox(
-                width: centerObjectSize,
-                height: centerObjectSize,
-                child: Stack(
-                  fit: StackFit.expand,
-                  children: [
-                    Center(
-                      child: Container(
-                        width: centerObjectSize * 0.1,
-                        height: centerObjectSize * 0.1,
-                        alignment: Alignment.center,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.orange.withOpacity(0.4),
-                              spreadRadius: 1,
-                              blurRadius: 4,
-                              offset: const Offset(0, 0),
-                            )
-                          ],
-                        ),
+Widget _selectItem(IconData icon, double centerObjectSize, double animationValue, double angle, Function selectIcon) {
+  return Opacity(
+    opacity: animationValue,
+    child: Transform.rotate(
+      angle: angle,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Expanded(
+            child: Stack(
+              children: [
+                Positioned(
+                  top: -30, // 調整
+                  left: 0,
+                  child: GestureDetector(
+                    onTap: () {
+                      selectIcon(icon);
+                    },
+                    child: SizedBox(
+                      width: centerObjectSize,
+                      height: centerObjectSize,
+                      child: Stack(
+                        fit: StackFit.expand,
+                        children: [
+                          Center(
+                            child: Container(
+                              width: centerObjectSize * 0.1,
+                              height: centerObjectSize * 0.1,
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.orange.withOpacity(0.4),
+                                    spreadRadius: 1,
+                                    blurRadius: 4,
+                                    offset: const Offset(0, 0),
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
+                          Center(
+                            child: Icon(
+                              icon,
+                              color: Colors.orange[300]!,
+                              size: 12,
+                            ),
+                          )
+                        ],
                       ),
                     ),
-                    Center(
-                      child: Icon(
-                        icon,
-                        color: Colors.orange[300]!,
-                        size: 12,
-                      ),
-                    )
-                  ],
+                  ),
                 ),
-              ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
-    ],
+    ),
   );
 }
 
@@ -310,9 +282,9 @@ class NavigationPainter extends CustomPainter {
   });
 
   static const double _centerWidth = 180.0;
-  final double _upperStrength = 50;
-  final double _underStrength = 50;
-  final double _outSideOffset = 20;
+  static const double _upperStrength = 50;
+  static const double _underStrength = 50;
+  static const double _outSideOffset = 20;
 
   @override
   void paint(Canvas canvas, Size size) {
