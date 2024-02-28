@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class TagSelector extends StatefulWidget {
-  const TagSelector({super.key});
+class TagSelectorPage extends StatefulWidget {
+  const TagSelectorPage({super.key});
 
   @override
-  State<TagSelector> createState() => _TagSelectorState();
+  State<TagSelectorPage> createState() => _TagSelectorPageState();
 }
 
-class _TagSelectorState extends State<TagSelector> with SingleTickerProviderStateMixin {
+class _TagSelectorPageState extends State<TagSelectorPage> with SingleTickerProviderStateMixin {
   static const double _centerObjectSize = 80.0;
   static const double _navbarHeight = 100.0;
 

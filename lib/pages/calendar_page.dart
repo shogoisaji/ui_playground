@@ -39,9 +39,7 @@ class _CalendarPageState extends State<CalendarPage> with SingleTickerProviderSt
 
     void _resetCalendarPosition() {
       setState(() {
-        print("resetCalendarPosition:${_controller!.value}");
         _controller!.animateTo(0);
-        // _calendarPosition = const Offset(0, 0);
       });
     }
 
@@ -56,7 +54,7 @@ class _CalendarPageState extends State<CalendarPage> with SingleTickerProviderSt
       body: Stack(
         children: [
           Positioned(
-            top: MediaQuery.sizeOf(context).width * 0.85 * 1.52 - 70,
+            top: MediaQuery.sizeOf(context).width * 0.85 * 1.52 - 90,
             left: 30,
             child: Column(
               children: [
@@ -165,15 +163,6 @@ class _CalendarPageState extends State<CalendarPage> with SingleTickerProviderSt
               top: MediaQuery.sizeOf(context).width * 0.85 * 1.52 + 70,
               left: 0,
               child: ListWidget(selectList: _selectList)),
-          // Positioned(
-          //   top: 50,
-          //   left: 5,
-          //   child: IconButton(
-          //       icon: const Icon(Icons.arrow_back, color: Colors.white, size: 30),
-          //       onPressed: () {
-          //         context.go('/');
-          //       }),
-          // ),
         ],
       ),
     );
@@ -335,7 +324,7 @@ class _CalendarWidgetState extends State<CalendarWidget> {
                       },
                       feedback: const Icon(Icons.drag_handle, color: Colors.transparent),
                       child: Padding(
-                        padding: const EdgeInsets.all(8.0),
+                        padding: const EdgeInsets.all(16.0),
                         child: Icon(Icons.drag_handle, color: Colors.green[100]),
                       )),
                 ],
@@ -362,7 +351,7 @@ class _ListWidgetState extends State<ListWidget> {
     final w = MediaQuery.sizeOf(context).width;
     return Container(
       width: w,
-      height: 300,
+      height: 400,
       padding: const EdgeInsets.all(16.0),
       decoration: BoxDecoration(
         boxShadow: [
@@ -400,15 +389,17 @@ class _ListWidgetState extends State<ListWidget> {
           ),
           Positioned(
             right: 0,
+            top: 0,
+            bottom: 0,
             child: Container(
               width: w * 0.75,
-              height: 500,
               padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 2.0),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
                 color: const Color.fromARGB(255, 66, 88, 67),
               ),
               child: ListView.builder(
+                  itemCount: 30,
                   padding: EdgeInsets.zero,
                   itemBuilder: (context, index) => Card(
                         margin: const EdgeInsets.all(8),

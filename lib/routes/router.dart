@@ -1,23 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ui_playground/pages/calendar_page.dart';
-import 'package:ui_playground/pages/color_bg.dart';
-import 'package:ui_playground/pages/custom_valume_page.dart';
-import 'package:ui_playground/pages/drag_list_page.dart';
+import 'package:ui_playground/pages/color_bg_page.dart';
+import 'package:ui_playground/pages/custom_volume_page.dart';
 import 'package:ui_playground/pages/ec_page.dart';
 import 'package:ui_playground/pages/hide_screen_page.dart';
-import 'package:ui_playground/pages/interactive_selector.dart';
-import 'package:ui_playground/pages/matrix4_list.dart';
+import 'package:ui_playground/pages/interactive_selector_page.dart';
+import 'package:ui_playground/pages/matrix4_list_page.dart';
+import 'package:ui_playground/pages/particle_page.dart';
 import 'package:ui_playground/pages/perspective_page.dart';
 import 'package:ui_playground/pages/slide_select_page.dart';
 import 'package:ui_playground/pages/spin_label_page.dart';
-import 'package:ui_playground/pages/tag_selector.dart';
+import 'package:ui_playground/pages/tag_selector_page.dart';
+import 'package:ui_playground/pages/texture_page.dart';
 
 // 新しいpageを追加する場合は、pagesリストにMapを追加する
 List<Map<String, dynamic>> pages = [
   {
+    'name': 'particle',
+    'page': const ParticlePage(),
+  },
+  {
+    'name': 'texture',
+    'page': const TexturePage(),
+  },
+  {
     'name': 'tag_selector',
-    'page': const TagSelector(),
+    'page': const TagSelectorPage(),
   },
   {
     'name': 'spin_label',
@@ -26,10 +35,6 @@ List<Map<String, dynamic>> pages = [
   {
     'name': 'interactive_selector',
     'page': const InteractiveSelector(),
-  },
-  {
-    'name': 'drag_list',
-    'page': const DragListPage(),
   },
   {
     'name': 'calendar',

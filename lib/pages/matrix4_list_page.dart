@@ -99,7 +99,7 @@ class Matrix4ListPage extends HookWidget {
                   transform: Matrix4.identity()
                     ..translate(0.0, 300 * (1 - animation.value), 0.0)
                     ..setEntry(3, 2, -0.001)
-                    ..scale(1, 1, 1)
+                    // ..scale(1, 1, 1)
                     ..rotateX(0 - (1 - animation.value)),
                   child: Center(
                     child: Container(
