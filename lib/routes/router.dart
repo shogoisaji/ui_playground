@@ -6,9 +6,12 @@ import 'package:ui_playground/pages/custom_volume_page.dart';
 import 'package:ui_playground/pages/ec_page.dart';
 import 'package:ui_playground/pages/hide_screen_page.dart';
 import 'package:ui_playground/pages/interactive_selector_page.dart';
+import 'package:ui_playground/pages/line_chart_page.dart';
+import 'package:ui_playground/pages/shining_border.dart';
 import 'package:ui_playground/pages/matrix4_list_page.dart';
 import 'package:ui_playground/pages/particle_page.dart';
 import 'package:ui_playground/pages/perspective_page.dart';
+import 'package:ui_playground/pages/side_selector.dart';
 import 'package:ui_playground/pages/slide_select_page.dart';
 import 'package:ui_playground/pages/spin_label_page.dart';
 import 'package:ui_playground/pages/tag_selector_page.dart';
@@ -16,6 +19,18 @@ import 'package:ui_playground/pages/texture_page.dart';
 
 // 新しいpageを追加する場合は、pagesリストにMapを追加する
 List<Map<String, dynamic>> pages = [
+  {
+    'name': 'line_chart',
+    'page': const LineChartPage(),
+  },
+  {
+    'name': 'side_selector',
+    'page': const SideSelectorPage(),
+  },
+  {
+    'name': 'shining_border',
+    'page': const ShiningBorderPage(),
+  },
   {
     'name': 'particle',
     'page': const ParticlePage(),
